@@ -44,7 +44,8 @@ for cycle in 1:n_cycles
     
 
     if !spiking
-        n.Act += abs(n.ΔVm) * (noisy_xx1(pr, n.Ge - compute_g_theta_e(n)) - n.Act) #activation function for ratecode model
+        n.Act += abs(n.ΔVm) * (noisy_xx1(pr, n.Ge - compute_g_theta_e(n)) - n.Act) # Nxx1 activation function 
+        #n.Act += abs(n.ΔVm) * (sigmoid(n.Ge - compute_g_theta_e(n), 500) - n.Act) # Sigmoid activation function
     end
 
     if KNaAdapt && !spiking
