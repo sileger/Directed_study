@@ -6,11 +6,6 @@ global seed = 1234
 xx1_noise = 0.01 # noise levels outside the range of 0.005 and 0.015 produce strange results
 pr = create_params(xx1_noise)
 
-# Plot XX1 function
-x_values = range(-0.02, stop=0.04, length=1000)
-noisy_xx1_values = [noisy_xx1(pr, x) for x in x_values]
-xx1plot = plot(x_values, noisy_xx1_values, xlabel="x", ylabel="Smoothed XX1", legend=false)
-
 # Neuron parameters, most important to change is GbarE 
 # With current parameters G theta E varies between roughly 0.12 to 0.25
 GbarE = 0.2; GbarL = 0.3; ErevE = 1; ErevL = 0.3; ErevK = -0.2; Vm = 0.3
@@ -53,7 +48,7 @@ for i in 1:2
             if i == 1
                 n[i].Act += abs(n[i].ΔVm) * (noisy_xx1(pr, n[i].Ge - compute_g_theta_e(n[i])) - n[i].Act) # Nxx1 activation function 
             else
-                n[i].Act += abs(n[i].ΔVm) * (sigmoid(n[i].Ge - compute_g_theta_e(n[i]), 500) * 0.8 - n[i].Act) # Sigmoid activation function
+                n[i].Act += abs(n[i].ΔVm) * (sigmoid(n[i].Ge - compute_g_theta_e(n[i]) - 0.008, 200) * 0.8 - n[i].Act) # Sigmoid activation function
             end
         end
     
@@ -91,8 +86,14 @@ for i in 1:2
 
 end
 
-compare = plot(GePlot[:,1], label="Ge")
-compare = plot!(ActPlot[:,1], label="Act nxx1")
-compare = plot!(ActPlot[:,2], label="Act Sigmoid")
+act_compare = plot(GePlot[:,1], label="Ge")
+act_compare = plot!(ActPlot[:,1], label="Act nxx1")
+act_compare = plot!(ActPlot[:,2], label="Act Sigmoid")
 
 
+# Plot XX1 function
+x_values = range(-0.02, stop=0.04, length=1000)
+noisy_xx1_values = [noisy_xx1(pr, x) for x in x_values]
+sigmoid_values = [sigmoid(x - 0.008, 200) * 0.8 for x in x_values]
+xx1_sigmoid_plot = plot(x_values, noisy_xx1_values, xlabel="x", ylabel="Smoothed XX1")
+xx1_sigmoid_plot = plot!(x_values, sigmoid_values, xlabel="x", ylabel="Sigmoid")
