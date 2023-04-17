@@ -2,7 +2,7 @@ using LinearAlgebra, Plots, Distributions, Random, StableRNGs, Statistics
 include("utilities.jl")
 
 global seed = 1234
-Random.seed!(1234)
+Random.seed!(seed)
 
 xx1_noise = 0.01 # noise levels outside the range of 0.005 and 0.015 produce strange results
 pr = create_params(xx1_noise)
