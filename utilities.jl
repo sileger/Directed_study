@@ -94,3 +94,7 @@ function update_params!(p::Params)
     p.SigValAt0 = 0.5 * p.SigMultEff
     p.InterpVal = xx1_gain_cor(p, p.InterpRange) - p.SigValAt0
 end
+
+function sigmoid(x, gain)
+    return 1 / (1 + exp(-gain * x))
+end
